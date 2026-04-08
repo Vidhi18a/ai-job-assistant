@@ -19,3 +19,4 @@ if st.button("Search"):
             st.warning("No jobs found for this skill")
     else:
         st.error("Please enter a skill")
+        # UI improvement
