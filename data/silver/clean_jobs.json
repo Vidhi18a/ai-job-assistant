@@ -1,0 +1,26 @@
+[
+  {
+    "title": "data analyst",
+    "skills": [
+      "sql",
+      "python",
+      "excel"
+    ]
+  },
+  {
+    "title": "ai engineer",
+    "skills": [
+      "machine learning",
+      "python",
+      "nlp"
+    ]
+  },
+  {
+    "title": "web developer",
+    "skills": [
+      "react",
+      "javascript",
+      "html"
+    ]
+  }
+]
