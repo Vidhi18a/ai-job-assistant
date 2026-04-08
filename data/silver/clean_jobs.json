@@ -1,26 +1,52 @@
 [
   {
-    "title": "data analyst",
+    "id": "data_analyst_001",
+    "title": "Data Analyst",
+    "normalized_title": "data analyst",
+    "role_family": "data analyst",
     "skills": [
-      "sql",
+      "excel",
       "python",
-      "excel"
-    ]
+      "sql"
+    ],
+    "keywords": [
+      "analytics",
+      "data"
+    ],
+    "summary": "SQL, Python, Excel",
+    "seniority": null,
+    "source": "local_json"
   },
   {
-    "title": "ai engineer",
+    "id": "ai_engineer_002",
+    "title": "AI Engineer",
+    "normalized_title": "ai engineer",
+    "role_family": "ai engineer",
     "skills": [
       "machine learning",
-      "python",
-      "nlp"
-    ]
+      "nlp",
+      "python"
+    ],
+    "keywords": [
+      "ai"
+    ],
+    "summary": "Machine Learning, Python, NLP",
+    "seniority": null,
+    "source": "local_json"
   },
   {
-    "title": "web developer",
+    "id": "web_developer_003",
+    "title": "Web Developer",
+    "normalized_title": "web developer",
+    "role_family": "web developer",
     "skills": [
-      "react",
+      "html",
       "javascript",
-      "html"
-    ]
+      "react"
+    ],
+    "keywords": [],
+    "summary": "React, JavaScript, HTML",
+    "seniority": null,
+    "source": "local_json"
   }
 ]

@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   etl:
@@ -19,7 +21,13 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install pytest
+        run: python -m pip install --upgrade pip pytest
 
-      - name: Run ETL script
+      - name: Regenerate normalized job data
         run: python scripts/etl.py
+
+      - name: Verify checked-in silver data is up to date
+        run: git diff --exit-code -- data/silver/clean_jobs.json
+
+      - name: Run tests
+        run: pytest -q

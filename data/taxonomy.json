@@ -1,0 +1,31 @@
+{
+  "skills": {
+    "python": ["python"],
+    "sql": ["sql", "postgresql", "mysql", "sqlite"],
+    "excel": ["excel", "spreadsheets"],
+    "pandas": ["pandas"],
+    "etl": ["etl", "data pipeline", "data pipelines"],
+    "airflow": ["airflow"],
+    "spark": ["spark", "pyspark"],
+    "streamlit": ["streamlit"],
+    "machine learning": ["machine learning", "ml"],
+    "nlp": ["nlp", "natural language processing"],
+    "llm": ["llm", "llms", "large language model", "large language models"],
+    "react": ["react"],
+    "javascript": ["javascript", "js"],
+    "html": ["html"]
+  },
+  "keywords": {
+    "analytics": ["analytics", "analysis", "analyst"],
+    "dashboarding": ["dashboard", "dashboards", "dashboarding", "reporting"],
+    "automation": ["automation", "automated"],
+    "ai": ["artificial intelligence", "ai"],
+    "data": ["data"]
+  },
+  "title_aliases": {
+    "machine learning engineer": "ai engineer",
+    "ml engineer": "ai engineer",
+    "business intelligence analyst": "data analyst",
+    "bi analyst": "data analyst"
+  }
+}
