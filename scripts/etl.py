@@ -1,5 +1,5 @@
 import json
-
+# minor ETL update
 # Load raw data
 with open('data/bronze/jobs.json') as f:
     jobs = json.load(f)
