@@ -69,3 +69,39 @@ Supported modes:
 
 - `skills`
 - `summary`
+
+
+# AI Job Assistant
+
+## Overview
+This project is an end-to-end AI application that helps users find jobs based on skills or summaries.
+
+## Features
+- Skill-based job matching
+- Missing skill detection
+- AI explanation
+- ETL pipeline (GitHub Actions)
+- UI + API integration
+- Playwright UI testing
+
+## Architecture
+- Bronze: raw data
+- Silver: cleaned data
+- ETL: Python + GitHub Actions
+- Backend: Python API
+- UI: HTML
+- Deployment: Vercel
+
+## Skills Used
+- grill-me
+- write-a-prd
+- prd-to-issues
+- tdd
+- improve-codebase-architecture
+
+## Testing
+- Pytest for logic
+- Playwright for UI testing
+
+## Deployment
+https://ai-job-assistant-peach.vercel.app
