@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Job Assistant</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background: #f5f7fb;
+        color: #1f2937;
+      }
+
+      .page {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 32px 20px 48px;
+      }
+
+      .hero,
+      .search-panel,
+      .results-panel {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        padding: 24px;
+        margin-bottom: 20px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin-top: 0;
+      }
+
+      .mode-toggle {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .field {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+
+      textarea.field {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      button {
+        background: #2563eb;
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 18px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #1d4ed8;
+      }
+
+      .status {
+        margin-bottom: 16px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 14px;
+      }
+
+      .status.info {
+        background: #eff6ff;
+        color: #1d4ed8;
+      }
+
+      .status.warn {
+        background: #fff7ed;
+        color: #c2410c;
+      }
+
+      .result-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 14px;
+      }
+
+      .muted {
+        color: #6b7280;
+        font-size: 14px;
+      }
+
+      .pill {
+        display: inline-block;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #eef2ff;
+        color: #3730a3;
+        font-size: 13px;
+      }
+
+      .pill.missing {
+        background: #fef2f2;
+        color: #b91c1c;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <h1>AI Job Assistant</h1>
+        <p>
+          Search curated data and AI roles using direct skills or a short background summary.
+        </p>
+      </section>
+
+      <section class="search-panel">
+        <h2>Search Jobs</h2>
+        <div class="mode-toggle">
+          <label><input type="radio" name="mode" value="skills" checked /> Skills</label>
+          <label><input type="radio" name="mode" value="summary" /> Background summary</label>
+        </div>
+
+        <input
+          id="skills-input"
+          class="field"
+          type="text"
+          placeholder="python, sql, machine learning"
+        />
+        <textarea
+          id="summary-input"
+          class="field"
+          placeholder="I have worked with Python, SQL, dashboards, and ETL workflows for analytics teams."
+          hidden
+        ></textarea>
+
+        <button id="search-button" type="button">Search</button>
+      </section>
+
+      <section class="results-panel">
+        <h2>Results</h2>
+        <div id="status"></div>
+        <div id="results"></div>
+      </section>
+    </main>
+
+    <script>
+      const skillsInput = document.getElementById("skills-input");
+      const summaryInput = document.getElementById("summary-input");
+      const statusEl = document.getElementById("status");
+      const resultsEl = document.getElementById("results");
+      const modeInputs = document.querySelectorAll("input[name='mode']");
+
+      function formatPercent(score) {
+        return `${Math.round(score * 100)}%`;
+      }
+
+      function matchStrength(score) {
+        if (score >= 0.5) return "Strong match";
+        if (score >= 0.2) return "Moderate match";
+        return "Low match";
+      }
+
+      function setMode(mode) {
+        const summaryMode = mode === "summary";
+        skillsInput.hidden = summaryMode;
+        summaryInput.hidden = !summaryMode;
+      }
+
+      function renderStatus(message, type = "info") {
+        statusEl.innerHTML = message ? `<div class="status ${type}">${message}</div>` : "";
+      }
+
+      function renderPills(items, missing = false) {
+        if (!items.length) return `<span class="muted">None</span>`;
+        return items
+          .map(
+            (item) => `<span class="pill ${missing ? "missing" : ""}">${item}</span>`
+          )
+          .join("");
+      }
+
+      function renderResults(payload) {
+        const { mode, results } = payload;
+
+        if (!results.length) {
+          renderStatus("No matching jobs were found for that search.", "warn");
+          resultsEl.innerHTML = "";
+          return;
+        }
+
+        if (mode === "summary") {
+          const rankingMode = results[0].ranking_mode;
+          renderStatus(
+            rankingMode === "fallback"
+              ? "AI-assisted ranking is unavailable. Showing fallback skill-match results."
+              : "Showing AI-assisted ranking based on your background summary.",
+            "info"
+          );
+        } else {
+          renderStatus(`Found ${results.length} matching job(s).`, "info");
+        }
+
+        resultsEl.innerHTML = results
+          .map((match) => {
+            const citedSkills =
+              match.ai_ranking?.cited_skills?.length > 0
+                ? match.ai_ranking.cited_skills.join(", ")
+                : "None";
+
+            return `
+              <article class="result-card">
+                <h3>${match.title}</h3>
+                <p class="muted">${matchStrength(match.score)} - Relevance: ${formatPercent(
+              match.score
+            )}</p>
+                <p><strong>Matched skills:</strong> ${renderPills(match.matched_skills)}</p>
+                <p><strong>Missing skills:</strong> ${renderPills(
+                  match.missing_skills,
+                  true
+                )}</p>
+                <p><strong>Explanation:</strong> ${match.explanation}</p>
+                ${
+                  mode === "summary"
+                    ? `<p><strong>Cited matched skills:</strong> ${citedSkills}</p>`
+                    : ""
+                }
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      async function runSearch() {
+        const selectedMode = document.querySelector("input[name='mode']:checked").value;
+        const query = selectedMode === "summary" ? summaryInput.value : skillsInput.value;
+
+        if (!query.trim()) {
+          renderStatus("Please enter a search query.", "warn");
+          resultsEl.innerHTML = "";
+          return;
+        }
+
+        renderStatus("Searching jobs...", "info");
+        resultsEl.innerHTML = "";
+
+        try {
+          const response = await fetch(
+            `/api/search?mode=${encodeURIComponent(selectedMode)}&query=${encodeURIComponent(query)}`
+          );
+
+          if (!response.ok) {
+            throw new Error("Search request failed.");
+          }
+
+          const payload = await response.json();
+          renderResults(payload);
+        } catch (error) {
+          renderStatus("The search service is unavailable right now.", "warn");
+          resultsEl.innerHTML = "";
+        }
+      }
+
+      modeInputs.forEach((input) => {
+        input.addEventListener("change", (event) => setMode(event.target.value));
+      });
+
+      document.getElementById("search-button").addEventListener("click", runSearch);
+      setMode("skills");
+    </script>
+  </body>
+  </html>
