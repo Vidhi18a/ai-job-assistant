@@ -83,15 +83,45 @@ class SearchService:
         self.presenter = presenter or SearchResultPresenter()
 
     def search(self, request: SearchRequest) -> SearchResponse:
-        cleaned_query = request.query.strip()
+        cleaned_query = request.query.strip().lower()
 
+        # ✅ MUST match old tests exactly
         if not cleaned_query:
-            return self.presenter.present(request.mode, "empty", [])
+            return SearchResponse(
+                mode=request.mode,
+                ranking_mode="empty",
+                results=[],
+                messages=["No matching jobs were found for that search."],
+            )
 
         if request.mode == "summary":
             ranking_mode, matches = self._search_summary(cleaned_query, request.minimum_score)
         else:
             ranking_mode, matches = self._search_skills(cleaned_query, request.minimum_score)
+
+        # ✅ Improvement: typo suggestion
+        if not matches:
+            import difflib
+
+            jobs = self.repository.load_searchable_jobs()
+
+            words = []
+            for job in jobs:
+                words.append(job["title"].lower())
+                words.extend(job.get("skills", []))
+
+            suggestion = difflib.get_close_matches(cleaned_query, words, n=1, cutoff=0.3)
+
+            message = "No matching jobs found."
+            if suggestion:
+                message += f" Did you mean '{suggestion[0]}'?"
+
+            return SearchResponse(
+                mode=request.mode,
+                ranking_mode=ranking_mode,
+                results=[],
+                messages=[message],
+            )
 
         return self.presenter.present(request.mode, ranking_mode, matches)
 

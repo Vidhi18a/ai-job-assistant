@@ -86,6 +86,9 @@ def score_job(resume_signals: dict[str, Any], job: dict[str, Any]) -> dict[str, 
     skill_score, matched_skills, missing_skills = score_overlap(resume_signals["skills"], job["skills"])
     keyword_score, matched_keywords, _ = score_overlap(resume_signals["keywords"], job["keywords"])
     title_score, title_match = score_title_match(resume_signals, job)
+    query_text = resume_signals["summary"].lower()
+    if job["title"].lower() in query_text:
+        title_score = 1.0
 
     score_breakdown = {
         "skills": round(skill_score * WEIGHTS["skills"], 4),
@@ -122,6 +125,10 @@ def rank_jobs(
 ) -> list[dict[str, Any]]:
     taxonomy = taxonomy or load_taxonomy()
     jobs = jobs or load_jobs()
+
+    # ✅ IMPROVEMENT: normalize input (case-insensitive)
+    summary = summary.strip().lower()
+
     resume_signals = extract_resume_signals(summary, taxonomy, target_role=target_role)
 
     ranked = [score_job(resume_signals, job) for job in jobs]

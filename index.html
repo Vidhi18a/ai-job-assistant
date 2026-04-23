@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Job Assistant</title>
+
     <style>
       :root {
         color-scheme: light;
@@ -120,10 +121,11 @@
       }
     </style>
   </head>
+
   <body>
     <main class="page">
       <section class="hero">
-        <h1>AI Job Assistant</h1>
+        <h1>💼 AI Job Assistant</h1>
         <p>
           Search curated data and AI roles using direct skills or a short background summary.
         </p>
@@ -131,6 +133,7 @@
 
       <section class="search-panel">
         <h2>Search Jobs</h2>
+
         <div class="mode-toggle">
           <label><input type="radio" name="mode" value="skills" checked /> Skills</label>
           <label><input type="radio" name="mode" value="summary" /> Background summary</label>
@@ -142,6 +145,7 @@
           type="text"
           placeholder="python, sql, machine learning"
         />
+
         <textarea
           id="summary-input"
           class="field"
@@ -196,10 +200,16 @@
       }
 
       function renderResults(payload) {
-        const { mode, results } = payload;
+        const { mode, results, messages } = payload;
+
+        // ✅ Show backend message (IMPORTANT IMPROVEMENT)
+        if (messages && messages.length > 0) {
+          const message = messages[0];
+          const isSuggestion = message.includes("Did you mean");
+          renderStatus(message, isSuggestion ? "warn" : "info");
+        }
 
         if (!results.length) {
-          renderStatus("No matching jobs were found for that search.", "warn");
           resultsEl.innerHTML = "";
           return;
         }
@@ -208,12 +218,10 @@
           const rankingMode = results[0].ranking_mode;
           renderStatus(
             rankingMode === "fallback"
-              ? "AI-assisted ranking is unavailable. Showing fallback skill-match results."
+              ? "AI-assisted ranking is unavailable. Showing fallback results."
               : "Showing AI-assisted ranking based on your background summary.",
             "info"
           );
-        } else {
-          renderStatus(`Found ${results.length} matching job(s).`, "info");
         }
 
         resultsEl.innerHTML = results
@@ -226,15 +234,14 @@
             return `
               <article class="result-card">
                 <h3>${match.title}</h3>
-                <p class="muted">${matchStrength(match.score)} - Relevance: ${formatPercent(
-              match.score
-            )}</p>
+                <p class="muted">
+                  ${matchStrength(match.score)} - Relevance: ${formatPercent(match.score)}
+                </p>
+
                 <p><strong>Matched skills:</strong> ${renderPills(match.matched_skills)}</p>
-                <p><strong>Missing skills:</strong> ${renderPills(
-                  match.missing_skills,
-                  true
-                )}</p>
+                <p><strong>Missing skills:</strong> ${renderPills(match.missing_skills, true)}</p>
                 <p><strong>Explanation:</strong> ${match.explanation}</p>
+
                 ${
                   mode === "summary"
                     ? `<p><strong>Cited matched skills:</strong> ${citedSkills}</p>`
@@ -264,14 +271,10 @@
             `/api/search?mode=${encodeURIComponent(selectedMode)}&query=${encodeURIComponent(query)}`
           );
 
-          if (!response.ok) {
-            throw new Error("Search request failed.");
-          }
-
           const payload = await response.json();
           renderResults(payload);
         } catch (error) {
-          renderStatus("The search service is unavailable right now.", "warn");
+          renderStatus("Search service unavailable.", "warn");
           resultsEl.innerHTML = "";
         }
       }
@@ -284,4 +287,4 @@
       setMode("skills");
     </script>
   </body>
-  </html>
+</html>

@@ -4,49 +4,118 @@
     "title": "Data Analyst",
     "normalized_title": "data analyst",
     "role_family": "data analyst",
-    "skills": [
-      "excel",
-      "python",
-      "sql"
-    ],
-    "keywords": [
-      "analytics",
-      "data"
-    ],
-    "summary": "SQL, Python, Excel",
+    "skills": ["python", "sql", "excel"],
+    "keywords": ["analytics", "data"],
+    "summary": "SQL Python Excel",
     "seniority": null,
     "source": "local_json"
   },
+
   {
-    "id": "ai_engineer_002",
-    "title": "AI Engineer",
-    "normalized_title": "ai engineer",
-    "role_family": "ai engineer",
-    "skills": [
-      "machine learning",
-      "nlp",
-      "python"
-    ],
-    "keywords": [
-      "ai"
-    ],
-    "summary": "Machine Learning, Python, NLP",
-    "seniority": null,
-    "source": "local_json"
-  },
+  "id": "ai_engineer_002",
+  "title": "AI Engineer",
+  "normalized_title": "ai engineer",
+  "role_family": "ai engineer",
+  "skills": ["python", "machine learning", "nlp"],
+  "keywords": ["ai"],
+  "summary": "Machine Learning NLP",
+  "seniority": null,
+  "source": "local_json"
+ },
+
   {
     "id": "web_developer_003",
     "title": "Web Developer",
     "normalized_title": "web developer",
     "role_family": "web developer",
-    "skills": [
-      "html",
-      "javascript",
-      "react"
-    ],
+    "skills": ["html", "javascript", "react"],
     "keywords": [],
-    "summary": "React, JavaScript, HTML",
+    "summary": "React JavaScript HTML",
     "seniority": null,
+    "source": "local_json"
+  },
+
+  {
+    "id": "data_scientist_004",
+    "title": "Data Scientist",
+    "normalized_title": "data scientist",
+    "role_family": "data scientist",
+    "skills": ["machine learning", "statistics"],  
+    "keywords": ["data"],
+    "summary": "Predictive modeling",
+    "seniority": "mid",
+    "source": "local_json"
+  },
+
+  {
+    "id": "data_engineer_005",
+    "title": "Data Engineer",
+    "normalized_title": "data engineer",
+    "role_family": "data engineer",
+    "skills": ["etl", "airflow", "spark"],  
+    "keywords": ["pipeline"],
+    "summary": "Data pipelines",
+    "seniority": "mid",
+    "source": "local_json"
+  },
+
+  {
+    "id": "frontend_dev_006",
+    "title": "Frontend Developer",
+    "normalized_title": "frontend developer",
+    "role_family": "web developer",
+    "skills": ["react", "css"],  
+    "keywords": ["frontend"],
+    "summary": "UI development",
+    "seniority": "junior",
+    "source": "local_json"
+  },
+
+  {
+    "id": "backend_dev_007",
+    "title": "Backend Developer",
+    "normalized_title": "backend developer",
+    "role_family": "web developer",
+    "skills": ["django", "api"],  
+    "keywords": ["backend"],
+    "summary": "Backend systems",
+    "seniority": "mid",
+    "source": "local_json"
+  },
+
+  {
+    "id": "supply_chain_008",
+    "title": "Supply Chain Analyst",
+    "normalized_title": "supply chain analyst",
+    "role_family": "supply chain analyst",
+    "skills": ["excel", "forecasting"],
+    "keywords": ["supply chain"],
+    "summary": "Supply chain analytics",
+    "seniority": "junior",
+    "source": "local_json"
+  },
+
+  {
+    "id": "logistics_009",
+    "title": "Logistics Coordinator",
+    "normalized_title": "logistics coordinator",
+    "role_family": "logistics coordinator",
+    "skills": ["planning", "coordination"],
+    "keywords": ["logistics"],
+    "summary": "Shipment coordination",
+    "seniority": "junior",
+    "source": "local_json"
+  },
+
+  {
+    "id": "operations_010",
+    "title": "Operations Analyst",
+    "normalized_title": "operations analyst",
+    "role_family": "operations analyst",
+    "skills": ["process improvement"],
+    "keywords": ["operations"],
+    "summary": "Operations analysis",
+    "seniority": "mid",
     "source": "local_json"
   }
 ]
